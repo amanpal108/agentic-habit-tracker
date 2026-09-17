@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0b0f" />
+  <title>Aman's daily streaks</title>
+  <style>
+    :root{color-scheme:dark;--bg:#090a0d;--card:#13151b;--muted:#8b91a1;--text:#f7f7f5;--line:#252832;--green:#b8f35d;--green2:#72d655;--orange:#ffb35c;--shadow:0 18px 50px rgba(0,0,0,.34)}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,rgba(184,243,93,.12),transparent 36%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    main{width:min(100%,520px);margin:auto;padding:calc(env(safe-area-inset-top) + 26px) 18px calc(env(safe-area-inset-bottom) + 44px)}
+    header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:25px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.date{font-size:13px;color:var(--muted);margin-top:7px}.ring{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) calc(var(--p)*1%),var(--line) 0);position:relative}.ring:after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--bg)}.ring strong{z-index:1;font-size:14px}
+    h1{font-size:33px;letter-spacing:-.045em;line-height:1.02;margin:0 0 8px}.sub{margin:0 0 23px;color:var(--muted);font-size:14px;line-height:1.5}
+    .habits{display:grid;gap:12px}.habit{background:linear-gradient(145deg,rgba(255,255,255,.025),transparent),var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}.habit-top{display:flex;gap:12px;align-items:center}.check{border:0;width:48px;height:48px;border-radius:15px;background:#20232b;color:#656b79;font-size:22px;font-weight:900;cursor:pointer;flex:0 0 auto}.check.done{background:var(--green);color:#10130d}.habit h2{font-size:17px;margin:0;letter-spacing:-.02em}.habit .status{font-size:12px;color:var(--muted);margin-top:5px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.stat{background:#0d0f13;border-radius:13px;padding:11px 12px}.stat b{font-size:20px}.stat span{color:var(--muted);font-size:11px;margin-left:4px}.days{display:flex;justify-content:space-between;margin-top:14px}.day{text-align:center}.dot{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#20232b;color:#707684;font-size:11px;font-weight:800;margin:auto}.dot.done{background:rgba(184,243,93,.16);color:var(--green)}.day small{display:block;margin-top:5px;color:#686e7b;font-size:9px;text-transform:uppercase}
+    .footer{display:flex;justify-content:space-between;margin-top:20px;color:#5f6572;font-size:11px}.error{background:#34191c;border:1px solid #6c292f;color:#ffb4bc;padding:12px;border-radius:13px;margin-bottom:12px;font-size:13px;display:none}
+  </style>
+</head>
+<body><main>
+<header><div><div class="eyebrow">Daily rhythm</div><div class="date" id="date"></div></div><div class="ring" id="ring" style="--p:0"><strong id="progress">0/0</strong></div></header>
+<h1>Keep the promises<br>you made yourself.</h1><p class="sub">Tell Instinct when you're done. Your streaks update here.</p>
+<div class="error" id="error">Showing saved data. Fresh updates will appear when you're online.</div><section class="habits" id="habits"></section>
+<div class="footer"><span>Updated <span id="updated">just now</span></span><span>View only</span></div>
+</main><script>
+const DATA_URL='./data.json';
+const fallback={updatedAt:new Date().toISOString(),habits:[{id:'calories',name:'Hit 3,000 cal',history:[]},{id:'gym',name:'Gym',history:[]},{id:'family',name:'Call dad/bua maa',history:[]}]};
+const dateKey=(d)=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+function streak(history,end=new Date()){const set=new Set(history);let count=0;for(let d=new Date(end);set.has(dateKey(d));d=addDays(d,-1))count++;return count}
+function best(history){const ds=[...new Set(history)].sort();let b=0,c=0,prev=null;for(const key of ds){const cur=new Date(key+'T12:00:00');c=prev&&Math.round((cur-prev)/86400000)===1?c+1:1;b=Math.max(b,c);prev=cur}return b}
+function render(data){const now=new Date(), today=dateKey(now);document.querySelector('#date').textContent=now.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});const done=data.habits.filter(h=>h.history.includes(today)).length;document.querySelector('#progress').textContent=`${done}/${data.habits.length}`;document.querySelector('#ring').style.setProperty('--p',data.habits.length?done/data.habits.length*100:0);document.querySelector('#updated').textContent=new Date(data.updatedAt).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});document.querySelector('#habits').innerHTML=data.habits.map(h=>{const isDone=h.history.includes(today);const days=Array.from({length:7},(_,i)=>addDays(now,i-6));return `<article class="habit"><div class="habit-top"><button class="check ${isDone?'done':''}" aria-label="${isDone?'Completed':'Not completed'}" disabled>${isDone?'✓':'·'}</button><div><h2>${esc(h.name)}</h2><div class="status">${isDone?'Done today':'Waiting for today’s check-in'}</div></div></div><div class="stats"><div class="stat"><b>${streak(h.history)}</b><span>current</span></div><div class="stat"><b>${best(h.history)}</b><span>best</span></div></div><div class="days">${days.map(d=>`<div class="day"><div class="dot ${h.history.includes(dateKey(d))?'done':''}">${h.history.includes(dateKey(d))?'✓':'·'}</div><small>${d.toLocaleDateString(undefined,{weekday:'narrow'})}</small></div>`).join('')}</div></article>`}).join('')}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+(async()=>{try{const r=await fetch(`${DATA_URL}?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw 0;const data=await r.json();localStorage.setItem('habit-data',JSON.stringify(data));render(data)}catch(e){document.querySelector('#error').style.display='block';render(JSON.parse(localStorage.getItem('habit-data')||JSON.stringify(fallback)))}})();
+</script></body></html>

@@ -1,0 +1,22 @@
+{
+  "updatedAt": "2026-09-16T20:29:00-07:00",
+  "habits": [
+    {
+      "id": "calories",
+      "name": "Hit 3,000 cal",
+      "history": []
+    },
+    {
+      "id": "gym",
+      "name": "Gym",
+      "history": []
+    },
+    {
+      "id": "family",
+      "name": "Call dad/bua maa",
+      "history": [
+        "2026-09-16"
+      ]
+    }
+  ]
+}

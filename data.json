@@ -1,22 +1,15 @@
 {
-  "updatedAt": "2026-09-16T20:29:00-07:00",
+  "updatedAt": "2026-09-16T21:59:00-07:00",
+  "calorieTarget": 3000,
+  "calories": {
+    "2026-09-12": {"total": 1995, "items": [{"name":"Earlier foods: oats, banana, samosa chaat, chai","calories":1490},{"name":"Banana","calories":105},{"name":"Pintola oats 60g + milk","calories":400}]},
+    "2026-09-13": {"total": 615, "items": [{"name":"4-egg omelette","calories":350},{"name":"2 bread slices","calories":160},{"name":"Banana","calories":105}]},
+    "2026-09-14": {"total": 1585, "items": [{"name":"Pintola oats 60g + milk","calories":400},{"name":"Banana","calories":105},{"name":"Trader Joe's raspberry yogurt","calories":140},{"name":"Ghee masala dosa + sambar/chutneys","calories":800},{"name":"Filter coffee","calories":140}]},
+    "2026-09-15": {"total": 1650, "items": [{"name":"Veg bean burrito taco","calories":400},{"name":"Boba","calories":350},{"name":"Samosa chaat","calories":900}]},
+    "2026-09-16": {"total": 1360, "items": [{"name":"Oats","calories":320},{"name":"Samosa chaat with chole","calories":900},{"name":"Large elaichi chai","calories":140}]}
+  },
   "habits": [
-    {
-      "id": "calories",
-      "name": "Hit 3,000 cal",
-      "history": []
-    },
-    {
-      "id": "gym",
-      "name": "Gym",
-      "history": []
-    },
-    {
-      "id": "family",
-      "name": "Call dad/bua maa",
-      "history": [
-        "2026-09-16"
-      ]
-    }
+    {"id": "gym", "name": "Gym", "history": ["2026-09-14"]},
+    {"id": "family", "name": "Call dad/bua maa", "history": ["2026-09-16"]}
   ]
 }

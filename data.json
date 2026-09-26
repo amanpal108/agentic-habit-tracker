@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T17:21:00-07:00",
+  "updatedAt": "2026-09-25T17:22:00-07:00",
   "calorieTarget": 3000,
   "calories": {
     "2026-09-12": {
@@ -96,7 +96,7 @@
       ]
     },
     "2026-09-25": {
-      "total": 700,
+      "total": 980,
       "items": [
         {
           "name": "Large banana",
@@ -109,6 +109,10 @@
         {
           "name": "Coffee with whole milk (1 cup, no sugar)",
           "calories": 50
+        },
+        {
+          "name": "Clif Builders protein bar",
+          "calories": 280
         }
       ]
     }
